@@ -73,6 +73,7 @@ var (
 	parseKocha       http.Handler
 	parseMacaron     http.Handler
 	parseMartini     http.Handler
+	parseOzzo        http.Handler
 	parsePat         http.Handler
 	parsePossum      http.Handler
 	parseR2router    http.Handler
@@ -138,6 +139,9 @@ func init() {
 	})
 	calcMem("Martini", func() {
 		parseMartini = loadMartini(parseAPI)
+	})
+	calcMem("Ozzo", func() {
+		parseOzzo = loadOzzo(parseAPI)
 	})
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
@@ -241,6 +245,10 @@ func BenchmarkMacaron_ParseStatic(b *testing.B) {
 func BenchmarkMartini_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseMartini, req)
+}
+func BenchmarkOzzo_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseOzzo, req)
 }
 func BenchmarkPat_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -353,6 +361,10 @@ func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkOzzo_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseOzzo, req)
+}
 func BenchmarkPat_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parsePat, req)
@@ -464,6 +476,10 @@ func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkOzzo_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseOzzo, req)
+}
 func BenchmarkPat_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parsePat, req)
@@ -557,6 +573,9 @@ func BenchmarkMacaron_ParseAll(b *testing.B) {
 }
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
+}
+func BenchmarkOzzo_ParseAll(b *testing.B) {
+	benchRoutes(b, parseOzzo, parseAPI)
 }
 func BenchmarkPat_ParseAll(b *testing.B) {
 	benchRoutes(b, parsePat, parseAPI)

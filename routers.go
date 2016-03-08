@@ -49,6 +49,7 @@ import (
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
+	ozzo "github.com/go-ozzo/ozzo-routing"
 	goji "github.com/zenazn/goji/web"
 )
 
@@ -185,7 +186,7 @@ func beegoHandlerTest(ctx *context.Context) {
 }
 
 func initBeego() {
-	beego.BConfig.RunMode = beego.PROD
+	beego.RunMode = "prod"
 	beego.BeeLogger.Close()
 }
 
@@ -896,6 +897,72 @@ func loadMartiniSingle(method, path string, handler interface{}) http.Handler {
 	martini := martini.New()
 	martini.Action(router.Handle)
 	return martini
+}
+
+// Ozzo
+var ozzoHandler = func(*ozzo.Context) error {return nil}
+func ozzoHandlerFuncTest(c *ozzo.Context) error {
+	io.WriteString(c.Response, c.Request.RequestURI)
+	return nil
+}
+func ozzoHandlerWrite(c *ozzo.Context) error {
+	io.WriteString(c.Response, c.Param("name"))
+	return nil
+}
+
+func loadOzzo(routes []route) http.Handler {
+	var h ozzo.Handler = ozzoHandler
+	if loadTestHandler {
+		h = ozzoHandlerFuncTest
+	}
+
+	router := ozzo.New()
+	for _, route := range routes {
+		path := convertOzzoPath(route.path)
+		switch route.method {
+		case "GET":
+			router.Get(path, h)
+		case "POST":
+			router.Post(path, h)
+		case "PUT":
+			router.Put(path, h)
+		case "PATCH":
+			router.Patch(path, h)
+		case "DELETE":
+			router.Delete(path, h)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
+var paramRegex = regexp.MustCompile(`:\w+`)
+
+func convertOzzoPath(path string) string {
+	return paramRegex.ReplaceAllStringFunc(path, func(m string) string {
+		return "<" + m[1:] + ">"
+	})
+}
+
+func loadOzzoSingle(method, path string, handler ozzo.Handler) http.Handler {
+	router := ozzo.New()
+	path = convertOzzoPath(path)
+	switch method {
+	case "GET":
+		router.Get(path, handler)
+	case "POST":
+		router.Post(path, handler)
+	case "PUT":
+		router.Put(path, handler)
+	case "PATCH":
+		router.Patch(path, handler)
+	case "DELETE":
+		router.Delete(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return router
 }
 
 // pat

@@ -13,7 +13,7 @@ var (
 		load func(routes []route) http.Handler
 	}{
 		{"Ace", loadAce},
-		{"Bear", loadBear},
+		//{"Bear", loadBear},
 		{"Beego", loadBeego},
 		{"Bone", loadBone},
 		{"Denco", loadDenco},
@@ -29,11 +29,12 @@ var (
 		//{"Kocha", loadKocha},
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
+		{"Ozzo", loadOzzo},
 		{"Pat", loadPat},
 		{"Possum", loadPossum},
 		{"R2router", loadR2router},
 		{"Revel", loadRevel},
-		{"Rivet", loadRivet},
+		//{"Rivet", loadRivet},
 		{"Tango", loadTango},
 		{"TigerTonic", loadTigerTonic},
 		{"Traffic", loadTraffic},
