@@ -186,7 +186,6 @@ func beegoHandlerTest(ctx *context.Context) {
 }
 
 func initBeego() {
-	beego.RunMode = "prod"
 	beego.BeeLogger.Close()
 }
 
@@ -327,22 +326,22 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(c *echo.Context) error {
+func echoHandler(c echo.Context) error {
 	return nil
 }
 
-func echoHandlerWrite(c *echo.Context) error {
+func echoHandlerWrite(c echo.Context) error {
 	io.WriteString(c.Response(), c.Param("name"))
 	return nil
 }
 
-func echoHandlerTest(c *echo.Context) error {
+func echoHandlerTest(c echo.Context) error {
 	io.WriteString(c.Response(), c.Request().RequestURI)
 	return nil
 }
 
 func loadEcho(routes []route) http.Handler {
-	var h interface{} = echoHandler
+	var h echo.HandlerFunc = echoHandler
 	if loadTestHandler {
 		h = echoHandlerTest
 	}
@@ -351,15 +350,15 @@ func loadEcho(routes []route) http.Handler {
 	for _, r := range routes {
 		switch r.method {
 		case "GET":
-			e.Get(r.path, h)
+			e.GET(r.path, h)
 		case "POST":
-			e.Post(r.path, h)
+			e.POST(r.path, h)
 		case "PUT":
-			e.Put(r.path, h)
+			e.PUT(r.path, h)
 		case "PATCH":
-			e.Patch(r.path, h)
+			e.PATCH(r.path, h)
 		case "DELETE":
-			e.Delete(r.path, h)
+			e.DELETE(r.path, h)
 		default:
 			panic("Unknow HTTP method: " + r.method)
 		}
@@ -367,19 +366,19 @@ func loadEcho(routes []route) http.Handler {
 	return e
 }
 
-func loadEchoSingle(method, path string, h interface{}) http.Handler {
+func loadEchoSingle(method, path string, h echo.HandlerFunc) http.Handler {
 	e := echo.New()
 	switch method {
 	case "GET":
-		e.Get(path, h)
+		e.GET(path, h)
 	case "POST":
-		e.Post(path, h)
+		e.POST(path, h)
 	case "PUT":
-		e.Put(path, h)
+		e.PUT(path, h)
 	case "PATCH":
-		e.Patch(path, h)
+		e.PATCH(path, h)
 	case "DELETE":
-		e.Delete(path, h)
+		e.DELETE(path, h)
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
