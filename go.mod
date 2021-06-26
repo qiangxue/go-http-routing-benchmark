@@ -22,8 +22,7 @@ require (
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/klauspost/compress v1.13.1 // indirect
-	github.com/labstack/echo v3.3.10+incompatible
-	github.com/labstack/gommon v0.3.0 // indirect
+	github.com/labstack/echo/v4 v4.3.0
 	github.com/lunny/log v0.0.0-20160921050905-7887c61bf0de
 	github.com/lunny/tango v0.5.6
 	github.com/mailgun/route v0.0.0-20191025171320-daa4df6c711a
