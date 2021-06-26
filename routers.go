@@ -17,7 +17,6 @@ import (
 	// - Keep the benchmark functions etc. alphabetically sorted
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
-	"github.com/Unknwon/macaron"
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
@@ -31,7 +30,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
@@ -51,6 +50,7 @@ import (
 	"github.com/vanng822/r2router"
 	ozzo "github.com/go-ozzo/ozzo-routing"
 	goji "github.com/zenazn/goji/web"
+	"gopkg.in/macaron.v1"
 )
 
 type route struct {
